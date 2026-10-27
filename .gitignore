@@ -1,0 +1,6 @@
+﻿data/raw/
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+inspection_report.txt
+**/secrets.toml

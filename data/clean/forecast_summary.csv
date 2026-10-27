@@ -1,0 +1,14 @@
+Series,Trend,Change_%,MAE,Naive_MAE
+All titles,Growing,12.0,46.53,30.08
+International Movies,Growing,12.7,20.07,12.75
+Dramas,Growing,17.7,18.27,8.44
+Comedies,Growing,25.5,15.82,7.78
+International TV Shows,Growing,19.8,10.91,8.32
+Documentaries,Stable,7.9,5.44,3.11
+Action & Adventure,Growing,34.2,9.26,6.42
+TV Dramas,Growing,16.5,4.77,5.75
+Independent Movies,Stable,-4.9,7.12,4.64
+Platform: Netflix (yearly),Declining,-12.8,,
+Platform: Hulu (yearly),Stable,7.6,,
+Platform: Prime Video (yearly),Growing,37.9,,
+Platform: Disney+ (yearly),Declining,-12.9,,
