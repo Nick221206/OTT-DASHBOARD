@@ -174,7 +174,7 @@ def tmdb_get(path, **params):
 
 # ---------------- pages ----------------
 def page_overview():
-    hero("🎬 OTT Content Trends and Prediction Dashboard",
+    hero(" OTT Content Trends and Prediction Dashboard",
          "Trends, forecasts and rating predictions across Netflix, Prime Video, Hulu and Disney+")
     df = load_platforms()
     c = st.columns(4)
@@ -202,7 +202,7 @@ def page_overview():
 
 
 def page_trends():
-    st.title("📈 Trends and Platform Viewer")
+    st.title(" Trends and Platform Viewer")
     tab1, tab2 = st.tabs(["Forecasts", "Platform comparison"])
 
     with tab1:
@@ -258,7 +258,7 @@ def page_trends():
 
 
 def page_rating():
-    st.title("⭐ Title Rating Lookup and Prediction")
+    st.title(" Title Rating Lookup and Prediction")
     models, cols = load_models()
     genre_opts = sorted(c[6:] for c in cols if c.startswith("genre_"))
     age_opts = sorted(c[4:] for c in cols if c.startswith("age_"))
@@ -332,7 +332,7 @@ def page_rating():
 
 
 def page_mood():
-    st.title("🎭 Mood-Based Discovery")
+    st.title(" Mood-Based Discovery")
     labels = {f"{d['emojis'][0]} {m.title()}": m for m, d in MOODS.items()}
     choice = st.radio("How are you feeling?", list(labels), horizontal=True)
     text = st.text_input("...or type a mood or a few words (optional, overrides the choice above)")
@@ -391,9 +391,9 @@ def get_posters(items, key):
 
 def card_html(r, url):
     t = html.escape(str(r.title))
-    img = f'<img src="{url}" alt="{t}">' if url else '<div class="ph">🎬</div>'
+    img = f'<img src="{url}" alt="{t}">' if url else '<div class="ph"></div>'
     year = int(r.year) if pd.notna(r.year) else "?"
-    rating = f'<span class="badge">⭐ {r.imdb_rating:.1f}</span>' if pd.notna(r.imdb_rating) else ""
+    rating = f'<span class="badge"> {r.imdb_rating:.1f}</span>' if pd.notna(r.imdb_rating) else ""
     genres = r.genres if isinstance(r.genres, str) else ""
     plats = r.platforms if isinstance(r.platforms, str) else ""
     gp = "".join(f'<span class="pill">{html.escape(x.strip())}</span>'
@@ -402,10 +402,6 @@ def card_html(r, url):
                  for x in plats.split(",") if x.strip())
     return (f'<div class="card">{img}<div class="body"><div class="t">{t}</div>'
             f'<div class="m">{year} · {r.type}</div>{rating}<div>{gp}</div><div>{pp}</div></div></div>')
-
-
-
-
 
 
 
@@ -508,7 +504,7 @@ def show_details(info, key):
 
 
 def page_browse():
-    hero("🔎 Browse and Explore", "Filter the catalogue, then click Story under any poster")
+    hero(" Browse and Explore", "Filter the catalogue, then click Story under any poster")
     df = load_platforms()
     c1, c2, c3, c4 = st.columns(4)
     q = c1.text_input("Title contains")
@@ -566,11 +562,11 @@ def page_browse():
         for col, (r, u) in zip(cols, shown[start:start + 5]):
             with col:
                 year = int(r.year) if pd.notna(r.year) else "?"
-                rating = f" · ⭐ {r.imdb_rating:.1f}" if pd.notna(r.imdb_rating) else ""
+                rating = f" ·  {r.imdb_rating:.1f}" if pd.notna(r.imdb_rating) else ""
                 st.image(u)
                 st.markdown(f"**{r.title}**")
                 st.caption(f"{year}{rating}")
-                if st.button("📖 Story", key=f"story_{page}_{r.Index}"):
+                if st.button(" Story", key=f"story_{page}_{r.Index}"):
                     show_details({
                         "title": str(r.title),
                         "year": int(r.year) if pd.notna(r.year) else 0,
@@ -584,7 +580,7 @@ def page_browse():
                     }, key)
 # ---------------- navigation ----------------
 def page_rating_soon():
-    hero("⭐ Title Rating Lookup", "Search any real title and compare it with the model's prediction")
+    hero(" Title Rating Lookup", "Search any real title and compare it with the model's prediction")
     coming_soon("🚧", "Coming in the next phase",
                 "Live TMDB search and the interactive rating predictor will be added once "
                 "the core analysis is complete.",
@@ -595,7 +591,7 @@ def page_rating_soon():
 
 
 def page_mood_soon():
-    hero("🎭 Mood-Based Discovery", "Tell us how you feel and get a suggestion")
+    hero(" Mood-Based Discovery", "Tell us how you feel and get a suggestion")
     coming_soon("🚧", "Coming in the next phase",
                 "The recommendation engine is built and tested. Its dashboard page is being "
                 "polished for the next release.",
@@ -637,7 +633,7 @@ def infer_genres(story, bundle, top_k=15):
 
 
 def page_predictor():
-    hero("🔮 Pitch Predictor", "Describe a new story in a few lines and see how it might be rated")
+    hero(" Pitch Predictor", "Describe a new story in a few lines and see how it might be rated")
     models, cols = load_models()
     genre_opts = sorted(c[6:] for c in cols if c.startswith("genre_"))
     age_opts = sorted(c[4:] for c in cols if c.startswith("age_"))
@@ -657,7 +653,7 @@ def page_predictor():
     manual = c2.multiselect("Override genres (optional, leave empty to detect from the story)",
                             genre_opts)
 
-    if not st.button("🔮 Predict outcome", type="primary"):
+    if not st.button(" Predict outcome", type="primary"):
         return
     if len(story.split()) < 8 and not manual:
         st.warning("Please write at least a couple of full sentences so the story can be matched.")
@@ -700,14 +696,44 @@ def page_predictor():
     st.caption("This is a statistical estimate from the genre your story falls into plus the "
                "details you chose. It does not judge writing quality, casting or marketing.")
 # ---------------- navigation ----------------
-PAGES = {"🏠 Overview": page_overview,
-         "📈 Trend and Platform Viewer": page_trends,
-         "🔎 Browse and Explore": page_browse,
-         "🔮 Pitch Predictor": page_predictor,
-         "🎭 Mood-Based Discovery (next phase)": page_mood_soon}
-st.sidebar.markdown("## 🎬 OTT Dashboard")
-choice = st.sidebar.radio("Navigate", list(PAGES), label_visibility="collapsed")
-st.sidebar.divider()
-st.sidebar.caption("Phase 1 of 2 · Core analysis and forecasting")
-st.sidebar.caption("This product uses the TMDB API but is not endorsed or certified by TMDB.")
+PAGES = {":material/dashboard: Overview": page_overview,
+         ":material/trending_up: Trends": page_trends,
+         ":material/movie: Browse": page_browse,
+         ":material/auto_awesome: Pitch Predictor": page_predictor,
+         ":material/mood: Mood (soon)": page_mood_soon}
+
+st.markdown("""
+<style>
+[data-testid="stSidebar"], [data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {display: none;}
+header[data-testid="stHeader"] {background: transparent;}
+
+.st-key-topbar {position: sticky; top: 0; z-index: 999; padding: 10px 4px;
+    margin-bottom: 18px; background: rgba(14,17,23,.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #2A2E3A;}
+.brand {font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: -.5px; padding-top: 4px;}
+.brand span {color: #E50914;}
+
+.st-key-nav div[role="radiogroup"] {gap: 6px; flex-wrap: wrap; justify-content: flex-end;}
+.st-key-nav label[data-baseweb="radio"] {background: transparent; border: 1px solid transparent;
+    padding: 7px 16px; border-radius: 999px; margin: 0; cursor: pointer;}
+.st-key-nav label[data-baseweb="radio"] > div:first-child {display: none;}
+.st-key-nav label[data-baseweb="radio"]:hover {background: #1A1D26;}
+.st-key-nav label[data-baseweb="radio"]:has(input:checked) {background: #E50914;}
+.st-key-nav label[data-baseweb="radio"]:has(input:checked) p {color: #fff; font-weight: 600;}
+
+@media (max-width: 640px) {
+  .st-key-nav div[role="radiogroup"] {justify-content: flex-start;}
+  .st-key-nav label[data-baseweb="radio"] {padding: 6px 12px;}
+}
+</style>
+""", unsafe_allow_html=True)
+
+with st.container(key="topbar"):
+    left, right = st.columns([1, 3])
+    left.markdown('<div class="brand"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E50914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-6px;margin-right:6px"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9l5 3-5 3z" fill="#E50914"/></svg><span>OTT</span> Insights</div>', unsafe_allow_html=True)
+    with right:
+        choice = st.radio("Navigate", list(PAGES), horizontal=True,
+                          label_visibility="collapsed", key="nav")
+
 PAGES[choice]()
